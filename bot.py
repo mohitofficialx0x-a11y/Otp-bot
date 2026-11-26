@@ -391,10 +391,22 @@ async def error_handler(update: object, ctx: ContextTypes.DEFAULT_TYPE):
     logger.error("Error: %s", ctx.error)
 
 
+# ================= MENU COMMANDS =================
+async def post_init(application: Application):
+    await application.bot.set_my_commands(
+        [
+            ("start", "🚀 Start the Bot"),
+            ("help", "💬 Help & Support"),
+            ("cancel", "↩️ Cancel & Go Back"),
+            ("broadcast", "📣 Broadcast (Owner Only ⚡🖥️)"),
+        ]
+    )
+
+
 # ================= MAIN =================
 def main():
     init_db()
-    app = Application.builder().token(BOT_TOKEN).build()
+    app = Application.builder().token(BOT_TOKEN).post_init(post_init).build()
     app.add_handler(CommandHandler("start", start_cmd))
     app.add_handler(CommandHandler("claim", claim_cmd))
     app.add_handler(CommandHandler("contact", contact_cmd))
